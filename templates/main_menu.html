@@ -1,0 +1,57 @@
+add want apply dark theme on containers
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">Welcome, {{ user.user_name }}</h2>
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">💸 Withdraw</h5>
+        <a href="{{ url_for('withdraw') }}" class="btn btn-primary">Open</a>
+      </div>
+    </div>
+  </div>      
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">💰 Deposit</h5>
+        <a href="{{ url_for('deposit') }}" class="btn btn-primary">Open</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🔄 Transfer</h5>
+        <a href="{{ url_for('transfer') }}" class="btn btn-primary">Open</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📊 Balance</h5>
+        <a href="{{ url_for('balance') }}" class="btn btn-primary">Check</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📧 Send Statement</h5>
+        <a href="{{ url_for('send_statement') }}" class="btn btn-primary">Email me</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🔑 Change Your PIN</h5>
+        <a href="{{ url_for('change_pin') }}" class="btn btn-primary">Press</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

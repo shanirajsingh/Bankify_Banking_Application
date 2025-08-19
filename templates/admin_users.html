@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>👥 Users</h2>
+    <a href="{{ url_for('admin_create_user') }}" class="btn btn-success">➕ Create User</a>
+  </div>
+  <table class="table table-bordered table-striped mt-3">
+    <thead>
+      <tr>
+        <th>Account No</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Balance</th>
+        <th>Admin?</th>
+        <th style="width:260px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.account_number }}</td>
+        <td>{{ u.user_name }}</td>
+        <td>{{ u.email }}</td>
+        <td>₹{{ "%.2f"|format(u.balance) }}</td>
+        <td>{{ 'Yes' if u.is_admin else 'No' }}</td>
+        <td>
+          <a class="btn btn-primary btn-sm" href="{{ url_for('admin_edit_user', account_number=u.account_number) }}">✏️ Edit</a>
+          <a class="btn btn-warning btn-sm" href="{{ url_for('admin_adjust_balance', account_number=u.account_number) }}">💰 Adjust</a>
+          <form class="d-inline" method="post" action="{{ url_for('admin_delete_user', account_number=u.account_number) }}" onsubmit="return confirm('Delete this user?')">
+            <button class="btn btn-danger btn-sm">❌ Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center mt-3">
+  <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+</div>
+</div>
+{% endblock %}

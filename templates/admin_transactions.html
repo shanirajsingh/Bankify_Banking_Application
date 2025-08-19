@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>💳 All Transactions (latest 200)</h2>
+  <table class="table table-bordered table-hover mt-3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Account No</th>
+        <th>Details</th>
+        <th>Debit</th>
+        <th>Credit</th>
+        <th>Balance</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in txns %}
+      <tr>
+        <td>{{ t.id }}</td>
+        <td>{{ t.account_number }}</td>
+        <td>{{ t.transaction_details }}</td>
+        <td>{{ t.debit }}</td>
+        <td>{{ t.credit }}</td>
+        <td>{{ t.balance }}</td>
+        <td>{{ t.transaction_date.strftime('%d-%m-%Y %H:%M:%S') if t.transaction_date else '' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center mt-3">
+  <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+</div>
+
+</div>
+{% endblock %}

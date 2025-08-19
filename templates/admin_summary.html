@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>📊 Bank Summary</h2>
+  <ul class="list-group mt-3">
+    <li class="list-group-item d-flex justify-content-between">
+      <span>Total Users</span><strong>{{ total_users }}</strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+      <span>Total Balance Across Users</span><strong>₹{{ "%.2f"|format(total_balance) }}</strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+      <span>Total Credits (all time)</span><strong>₹{{ "%.2f"|format(total_credits) }}</strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+      <span>Total Debits (all time)</span><strong>₹{{ "%.2f"|format(total_debits) }}</strong>
+    </li>
+  </ul>
+  <div class="d-flex justify-content-center mt-3">
+  <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+</div>
+</div>
+{% endblock %}

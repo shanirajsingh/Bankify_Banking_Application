@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <h3 class="card-title text-center mb-4">Sign Up</h3>
+
+        <!-- STEP 1: Name + Email -->
+        {% if not session.get('signup') %}
+        <form method="post" action="{{ url_for('signup_post') }}">
+          <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <!-- Full Name: Only letters + spaces allowed -->
+            <input type="text" name="name" class="form-control" 
+              pattern="^[A-Za-z\s]{3,30}$" 
+              title="Name should only contain letters and spaces (3-30 characters)" 
+              required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <!-- Email: Standard email regex -->
+            <input type="email" name="email" class="form-control"
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$"
+            title="Enter a valid email address"
+            required>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" name="action" value="send_otp" class="btn btn-info">
+              Send OTP
+            </button>
+            <a href="{{ url_for('login_page') }}" class="btn btn-secondary">⬅ Back to Login</a>
+          </div>
+        </form>
+        {% endif %}
+
+        <!-- STEP 2: OTP + PIN -->
+        {% if session.get('signup') %}
+        <form method="post" action="{{ url_for('signup_post') }}">
+          <div class="mb-3">
+            <label class="form-label">Enter OTP (sent to {{ session['signup']['email'] }})</label>
+            <!-- OTP: Only 6 digit number -->
+            <input type="text" name="otp" class="form-control" 
+            pattern="^[0-9]{6}$"
+            title="OTP must be a 6-digit number"
+            required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Set PIN</label>
+            <!-- PIN: Only 4 to 6 digits -->
+            <input type="password" name="pin" class="form-control"
+            pattern="^[0-9]{4,6}$"
+            title="PIN must be 4 to 6 digits"
+            autocomplete="off"
+            required>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success">Create Account</button>
+            <a href="{{ url_for('login_page') }}" class="btn btn-secondary">⬅ Back to Login</a>
+          </div>
+        </form>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>💰 Adjust Balance</h2>
+  <div class="alert alert-info">
+    <strong>{{ u.user_name }}</strong> — A/C: {{ u.account_number }} — Current: ₹{{ "%.2f"|format(u.balance) }}
+  </div>
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Amount</label>
+      <input type="number" step="0.01" name="amount" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Action</label>
+      <select name="action" class="form-select">
+        <option value="add">Add (Credit)</option>
+        <option value="subtract">Subtract (Debit)</option>
+      </select>
+    </div>
+    <button class="btn btn-success">Apply</button>
+    <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">Back</a>
+  </form>
+</div>
+{% endblock %}

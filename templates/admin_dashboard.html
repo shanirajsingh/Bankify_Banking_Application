@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>👨‍💼 Admin Dashboard</h2>
+  <div class="list-group my-3">
+    <a class="list-group-item list-group-item-action" href="{{ url_for('admin_users') }}">👥 Manage Users</a>
+    <a class="list-group-item list-group-item-action" href="{{ url_for('admin_transactions') }}">💳 All Transactions</a>
+    <a class="list-group-item list-group-item-action" href="{{ url_for('admin_summary') }}">📊 Bank Summary</a>
+  </div>
+  <div class="d-flex justify-content-center mt-3">
+  <a href="{{ url_for('main_menu') }}" class="btn btn-secondary">Back to Menu</a>
+</div>
+</div>
+{% endblock %}

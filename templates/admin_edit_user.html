@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>✏️ Edit User ({{ u.account_number }})</h2>
+  <form method="post" class="mt-3">
+    <div class="mb-3">
+      <label class="form-label">User Name</label>
+      <input type="text" name="user_name" value="{{ u.user_name }}" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">PIN (4–6 digits)</label>
+      <input type="text" name="pin" value="{{ u.pin }}" pattern="[0-9]{4,6}" class="form-control" 
+      autocomplete="off"
+      required>
+      
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Is Admin?</label>
+      <select class="form-select" name="is_admin">
+        <option value="0" {% if not u.is_admin %}selected{% endif %}>No</option>
+        <option value="1" {% if u.is_admin %}selected{% endif %}>Yes</option>
+      </select>
+    </div>
+    <button class="btn btn-primary">Update</button>
+    <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">Back</a>
+  </form>
+</div>
+{% endblock %}

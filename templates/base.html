@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title or "Banking App" }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light  text-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('main_menu') }}">🏦 Bankify</a>
+    {% if session.get('user') %}
+    <div class="ms-auto">
+      <a href="{{ url_for('account_details') }}" class="btn btn-light btn-sm">Account</a>
+      <a href="{{ url_for('transactions') }}" class="btn btn-light btn-sm">Transactions</a>
+      {% if session['user'].get('is_admin') %}
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-warning btn-sm">Admin</a>
+      {% endif %}
+      <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Logout</a>
+    </div>
+    {% endif %}
+  </div>
+</nav>
+
+<div class="container my-4">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}
+      <div class="alert alert-{{ cat }} alert-dismissible fade show" role="alert">
+        {{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endwith %}
+
+  <!-- Debug / Admin Status (Safe) -->
+  <!--{% if session.get('user') %}
+    <p>Logged in as: {{ session['user'].get('user_name') }} | Admin: {{ session['user'].get('is_admin') }}</p>
+  {% else %}
+    <p>Not logged in</p>
+  {% endif %} -->
+
+  {% block content %}{% endblock %}
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

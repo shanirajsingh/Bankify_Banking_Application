@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card shadow">
+      <div class="card-body">
+        <h3 class="card-title text-center mb-4">🔑 Change Your PIN</h3>
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Current PIN</label>
+            <input type="password" name="current_pin" class="form-control" required>
+          </div>
+
+          <!-- New PIN with toggle -->
+          <div class="mb-3 position-relative">
+            <label class="form-label">New PIN</label>
+            <div class="input-group">
+              <input type="password" id="newPin" name="new_pin" class="form-control" required>
+              <button type="button" class="btn btn-outline-secondary" onclick="togglePin('newPin', this)">
+                👁️
+              </button>
+            </div>
+          </div>
+
+          <!-- Confirm PIN with toggle -->
+          <div class="mb-3 position-relative">
+            <label class="form-label">Confirm New PIN</label>
+            <div class="input-group">
+              <input type="password" id="confirmPin" name="confirm_pin" class="form-control" required>
+              <button type="button" class="btn btn-outline-secondary" onclick="togglePin('confirmPin', this)">
+                👁️
+              </button>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success">Update PIN</button>
+            <a href="{{ url_for('forgot_page') }}" class="btn btn-danger">Forgot PIN?</a>
+            <a href="{{ url_for('main_menu') }}" class="btn btn-secondary">⬅ Back to Menu</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function togglePin(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+      input.type = "text";
+      btn.textContent = "👁️";
+    } else {
+      input.type = "password";
+      btn.textContent = "👁️";
+    }
+  }
+</script>
+{% endblock %}

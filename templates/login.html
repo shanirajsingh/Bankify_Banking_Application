@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card shadow">
+      <div class="card-body">
+        <h3 class="card-title text-center mb-4">Login</h3>
+        <form method="post" action="{{ url_for('login_post') }}">
+          <div class="mb-3">
+            <label class="form-label">Account Number</label>
+            <input type="text" name="account" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">PIN</label>
+            <div class="input-group">
+              <input type="password" id="pin" name="pin" class="form-control"
+              autocomplete="off" required>
+              <button type="button" class="btn btn-outline-secondary" onclick="togglePIN()">
+                👁
+              </button>
+            </div>
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success">Login</button>
+            <a href="{{ url_for('signup_page') }}" class="btn btn-outline-primary">Sign Up</a>
+            <a href="{{ url_for('forgot_page') }}" class="btn btn-outline-danger">Forgot PIN</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for Show/Hide PIN -->
+<script>
+function togglePIN() {
+  let pinInput = document.getElementById("pin");
+  if (pinInput.type === "password") {
+    pinInput.type = "text";  // Show
+  } else {
+    pinInput.type = "password"; // Hide
+  }
+}
+</script>
+{% endblock %}
