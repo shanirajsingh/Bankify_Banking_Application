@@ -5,9 +5,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 import os
 
+
+EMAIL_USER = os.getenv("EMAIL_USER")
+EMAIL_PASS = os.getenv("EMAIL_PASS")
+
 def otp_genrater(user_id, subject, email_text):
-    sender_email_id = os.getenv("EMAIL_USER")
-    sender_pwd = os.getenv("EMAIL_PASS")   # Gmail App Password
+    sender_email_id = EMAIL_USER
+    sender_pwd = EMAIL_PASS   # Gmail App Password
     reciver_email_id = user_id
 
     otp = random.randint(100000, 999999)
@@ -33,8 +37,8 @@ def otp_genrater(user_id, subject, email_text):
         return None
 
 def send_email_attachment(email_id, account_number, user_name, pin):
-    sender_email_id = os.getenv("EMAIL_USER")  # Change
-    sender_pwd = os.getenv("EMAIL_PASS")          # Change
+    sender_email_id = EMAIL_USER  # Change
+    sender_pwd = EMAIL_PASS        # Change
     reciver_email_id = email_id
     subject = "Your Account Credentials"
     email_text = f"""
@@ -65,8 +69,8 @@ Bankify App Team
         return
 
 def send_account_statement(user, filepath):
-    sender_email_id = os.getenv("EMAIL_USER")  # Change
-    sender_pwd = os.getenv("EMAIL_PASS")                           # Change
+    sender_email_id = EMAIL_USER  # Change
+    sender_pwd = EMAIL_PASS                         # Change
     reciver_email_id = user.email_name
     subject = f"Bank Account Statement"
     email_text = f"""
