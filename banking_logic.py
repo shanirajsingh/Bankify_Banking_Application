@@ -22,6 +22,10 @@ import mysql.connector as sql
 import os
 from urllib.parse import urlparse
 
+import os
+print("✅ DATABASE_URL =", os.getenv("DATABASE_URL"))
+
+
 def connect_db():
     try:
         db_url = os.getenv("DATABASE_URL")
