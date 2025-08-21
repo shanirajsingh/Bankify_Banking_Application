@@ -155,24 +155,27 @@ def signup_post():
     otp_in = request.form.get("otp", "").strip()
 
     if request.form.get("action") == "send_otp":
-    if not re.match(r"^[A-Za-z\s]{3,30}$", name):
-        flash("Invalid name. Only letters and spaces (3–30 chars) allowed.", "danger")
-        return redirect(url_for("signup_page"))
-    if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$", email):
-        flash("Enter a valid email address.", "danger")
+        if not re.match(r"^[A-Za-z\s]{3,30}$", name):
+            flash("Invalid name. Only letters and spaces (3–30 chars) allowed.", "danger")
+            return redirect(url_for("signup_page"))
+    
+        if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$", email):
+            flash("Enter a valid email address.", "danger")
+            return redirect(url_for("signup_page"))
+    
+        subject = "OTP for Create New Account into Bankify App"
+        email_text = "is your OTP for Sign up into Bankify App."
+        otp = ems.otp_genrater(email, subject, email_text)
+    
+        if otp:
+            # store only email + name + otp
+            session["signup"] = {"email": email, "name": name, "otp": str(otp)}
+            flash("OTP sent to your email.", "info")
+        else:
+            flash("Failed to send OTP. Check email settings.", "danger")
+    
         return redirect(url_for("signup_page"))
 
-    subject = "OTP for Create New Account into Bankify App"
-    email_text = "is your OTP for Sign up into Bankify App."
-    otp = ems.otp_genrater(email, subject, email_text)
-
-    if otp:
-        # store only email + name + otp (not pin yet!)
-        session["signup"] = {"email": email, "name": name, "otp": str(otp)}
-        flash("OTP sent to your email.", "info")
-    else:
-        flash("Failed to send OTP. Check email settings.", "danger")
-    return redirect(url_for("signup_page"))
 
 
     # OTP + PIN Validation
