@@ -535,45 +535,67 @@ def forgot_post():
     email = request.form.get("email","").strip()
     action = request.form.get("action")
 
-    # Step 1: Send OTP
-    if action == "send_otp":
-        otp = opt.forgot_pwd(acc, email)
-        if otp:
-            session["reset"] = {"account": acc, "email": email, "otp": str(otp)}
-            flash("OTP sent to your email.", "info")
-        else:
-            flash("No user found with these details or email failure.", "danger")
-        return redirect(url_for("forgot_page"))
-    
-    # Step 2: Verify OTP + Reset PIN
-    data = session.get("reset", {})
-    otp_in = request.form.get("otp","").strip()
-    new_pin = request.form.get("new_pin","").strip()
+# STEP 1 → Send OTP
+if action == "send_otp":
+    if not re.match(r"^[A-Za-z\s]{3,30}$", name):
+        flash("Invalid name. Only letters and spaces (3–30 chars) allowed.", "danger")
+        return redirect(url_for("signup_page"))
+    if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$", email):
+        flash("Enter a valid email address.", "danger")
+        return redirect(url_for("signup_page"))
 
+    subject = "OTP for Create New Account into Bankify App"
+    email_text = "is your OTP for Sign up into Bankify App."
+    otp = ems.otp_genrater(email, subject, email_text)
+
+    if otp:
+        session["signup"] = {"email": email, "name": name, "otp": str(otp)}
+        flash("OTP sent to your email.", "info")
+    else:
+        flash("Failed to send OTP. Check email settings.", "danger")
+    return redirect(url_for("signup_page"))
+
+# STEP 2 → Create Account
+if action == "create_account":
+    data = session.get("signup", {})
     if not data:
-        flash("Request OTP first.", "warning")
-        return redirect(url_for("forgot_page"))
+        flash("Please request OTP first.", "warning")
+        return redirect(url_for("signup_page"))
+
+    if not re.match(r"^[0-9]{6}$", otp_in):
+        flash("OTP must be a 6-digit number.", "danger")
+        return redirect(url_for("signup_page"))
+
     if str(otp_in) != str(data.get("otp")):
         flash("OTP verification failed.", "danger")
-        return redirect(url_for("forgot_page"))
-    if not new_pin or not re.match(r"^[0-9]{4,6}$", new_pin):
-        flash("PIN must be 4–6 digits.", "warning")
-        return redirect(url_for("forgot_page"))
+        return redirect(url_for("signup_page"))
 
-    ok = opt.reset_password(new_pin, data["account"])
-    session.pop("reset", None)
+    if not re.match(r"^[0-9]{4,6}$", pin):
+        flash("PIN must be 4 to 6 digits.", "danger")
+        return redirect(url_for("signup_page"))
 
-    if ok:
-        flash(" New PIN set successfully.", "success")
+    # save pin
+    data["pin"] = pin
 
-        # 🔑 Check: If user logged in -> back to dashboard
-        if "user_id" in session:
-            return redirect(url_for("main_menu"))
-        else:
-            return redirect(url_for("login_page"))
+    # create account
+    account_number = opt.generate_unique_account_number()
+    user = opt.add_user(data["email"], account_number, data["name"], data["pin"])
+    if user:
+        session.pop("signup", None)
+        session["user"] = {
+            "account_number": user.account_number,
+            "user_name": user.user_name,
+            "pin": user.pin,
+            "email_name": user.email_name,
+            "balance": float(user.balance),
+            "is_admin": int(user.is_admin)
+        }
+        flash(f"Account created. Your account number is {account_number}", "success")
+        return redirect(url_for("main_menu"))
 
-    flash("Something went wrong.", "danger")
-    return redirect(url_for("forgot_page"))
+    flash("Something went wrong during signup.", "danger")
+    return redirect(url_for("signup_page"))
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
