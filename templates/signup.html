@@ -60,7 +60,10 @@
           </div>
 
           <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-success">Create Account</button>
+            <!-- IMPORTANT FIX -->
+            <button type="submit" name="action" value="create_account" class="btn btn-success">
+              Create Account
+            </button>
             <a href="{{ url_for('login_page') }}" class="btn btn-secondary">⬅ Back to Login</a>
           </div>
         </form>
