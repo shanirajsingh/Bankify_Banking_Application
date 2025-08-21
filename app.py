@@ -97,6 +97,16 @@ def admin_required(view):
         return view(*args, **kwargs)
     return wrapper
 
+
+@app.route("/testdb")
+def test_db():
+    conn = connect_db()
+    if conn:
+        return "✅ DB connected successfully"
+    else:
+        return "❌ DB connection failed"
+
+
 # --------- Auth ----------
 @app.route("/")
 def home():
