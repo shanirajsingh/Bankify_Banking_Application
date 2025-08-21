@@ -4,6 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 import os
+import threading
 
 
 EMAIL_USER = os.getenv("EMAIL_USER")
@@ -35,6 +36,7 @@ def otp_genrater(user_id, subject, email_text):
     except Exception as e:
         print("Email sending failed:", e)
         return None
+threading.Thread(target=send_async_email, args=(user_email, otp)).start()
 
 def send_email_attachment(email_id, account_number, user_name, pin):
     sender_email_id = EMAIL_USER  # Change
