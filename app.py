@@ -76,6 +76,22 @@ def current_user():
         }
     return user
 
+@app.route("/testdb")
+def test_db():
+    conn = connect_db()
+    if conn:
+        try:
+            cursor = conn.cursor()
+            cursor.execute("SELECT DATABASE();")
+            db_name = cursor.fetchone()
+            return f"✅ DB connected successfully. Current DB: {db_name[0]}"
+        except Exception as e:
+            return f"❌ Connected but query failed: {e}"
+        finally:
+            conn.close()
+    else:
+        return "❌ DB connection failed"
+
 def login_required(view):
     from functools import wraps
     @wraps(view)
@@ -96,16 +112,6 @@ def admin_required(view):
             return redirect(url_for("main_menu") if u else url_for("login_page"))
         return view(*args, **kwargs)
     return wrapper
-
-
-@app.route("/testdb")
-def test_db():
-    conn = connect_db()
-    if conn:
-        return "✅ DB connected successfully"
-    else:
-        return "❌ DB connection failed"
-
 
 # --------- Auth ----------
 @app.route("/")
