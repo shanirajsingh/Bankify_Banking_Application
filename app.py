@@ -84,13 +84,13 @@ def test_db():
             cursor = conn.cursor()
             cursor.execute("SELECT DATABASE();")
             db_name = cursor.fetchone()
-            return f"✅ DB connected successfully. Current DB: {db_name[0]}"
+            return f"DB connected successfully. Current DB: {db_name[0]}"
         except Exception as e:
-            return f"❌ Connected but query failed: {e}"
+            return f"Connected but query failed: {e}"
         finally:
             conn.close()
     else:
-        return "❌ DB connection failed"
+        return "DB connection failed"
 
 def login_required(view):
     from functools import wraps
