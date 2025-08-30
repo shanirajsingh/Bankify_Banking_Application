@@ -1,0 +1,17 @@
+CREATE TABLE users (
+    account_number VARCHAR(20) NOT NULL PRIMARY KEY,
+    user_name VARCHAR(100),
+    pin VARCHAR(20),
+    balance DECIMAL(10,2) DEFAULT 1000.00,
+    email VARCHAR(100)
+);
+
+CREATE TABLE transactions (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    account_number VARCHAR(20),
+    transaction_details VARCHAR(100),
+    debit DECIMAL(10,2),
+    credit DECIMAL(10,2),
+    balance DECIMAL(10,2),
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
